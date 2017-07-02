@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout.Constraints;
 import javax.swing.UIManager;
 
 public class ComFrame extends JFrame {
@@ -29,17 +30,17 @@ public class ComFrame extends JFrame {
 	private JPanel mainPanel  = null;//主面板
 	
 	//串口设置面板
-	private Label comSet_NumLabel = new Label("串口号");			//文本-串口号
-	private Label comSet_BaudLabel = new Label("波特率");			//文本-串口波特率
-	private Label comSet_CheckLabel = new Label("数据位");			//文本-串口校验位
-	private Label comSet_DataBitLabel =new Label("校验位");		//文本-串口数据位
-	private Label comSet_StopBitLabel = new Label("停止位");		//文本-串口停止位
+	private Label comSet_NumLabel = new Label("串口号:",Label.RIGHT);			//文本-串口号
+	private Label comSet_BaudLabel = new Label("波特率:",Label.RIGHT);			//文本-串口波特率
+	private Label comSet_CheckLabel = new Label("数据位:",Label.RIGHT);			//文本-串口校验位
+	private Label comSet_DataBitLabel =new Label("校验位:",Label.RIGHT);		//文本-串口数据位
+	private Label comSet_StopBitLabel = new Label("停止位:",Label.RIGHT);		//文本-串口停止位
 	private JComboBox comSet_NumComboBox = new JComboBox();			//下拉列表-串口号
 	private JComboBox comSet_BaudComboBox = new JComboBox();		//下拉列表-波特率
 	private JComboBox comSet_CheckComboBox = new JComboBox();		//下拉列表-校验位
 	private JComboBox comSet_DataBitComboBox = new JComboBox();		//下拉列表-数据位
 	private JComboBox comSet_StopBitComboBox = new JComboBox();		//下拉列表-停止位
-	private JButton comSet_OpenButton = new JButton();				//按钮-打开或关闭串口
+	private JButton comSet_OpenButton = new JButton("打开");				//按钮-打开或关闭串口
 	
 	//接收设置面板
 	private Checkbox receiveSet_TransToFileCheckbox = new Checkbox("接收转向文件...");	//复选框-接收转向文件
@@ -80,8 +81,8 @@ public class ComFrame extends JFrame {
 	private void initialize() {
 		// TODO Auto-generated method stub
 		Dimension size = getToolkit().getScreenSize();// 获得屏幕尺寸
-		setLocation((size.width - 640) / 2, (size.height - 480) / 2);// 设置登录窗体
-		setSize(640, 480);
+		setLocation((size.width - 800) / 2, (size.height - 600) / 2);// 设置登录窗体
+		setSize(800, 600);
 		setTitle("串口调试助手");
 		setVisible(true);
 		setContentPane(getMainPanel());//设置布局
@@ -97,8 +98,8 @@ public class ComFrame extends JFrame {
 				
 					JPanel optionsPanel = new JPanel(new GridLayout(3, 1));				//设置区域panel，3行1列
 						
-						JPanel comSetPanel = new JPanel(new GridLayout(2,1));			//串口设置区域panel，2行1列
-							JPanel comParametersPanel = new JPanel(new GridLayout(5, 2));//串口参数
+						JPanel comSetPanel = new JPanel(new GridBagLayout());			//串口设置区域panel，2行1列
+//							JPanel comParametersPanel = new JPanel(new GridBagLayout());//串口参数
 							
 						JPanel receiveSetPanel = new JPanel(new GridLayout(5, 1));		//接收设置区域panel，5行1列
 							JPanel saveFilePanel =new JPanel(new GridLayout(1, 2));		//保存数据和清除接收区域可点击文本，1行2列
@@ -116,20 +117,57 @@ public class ComFrame extends JFrame {
 			
 			receiveTextArea.setBorder(BorderFactory.createLoweredBevelBorder());
 			sendTextArea.setBorder(BorderFactory.createLoweredBevelBorder());
-				
-			comParametersPanel.add(comSet_NumLabel);
-			comParametersPanel.add(comSet_NumComboBox);
-			comParametersPanel.add(comSet_BaudLabel);
-			comParametersPanel.add(comSet_BaudComboBox);
-			comParametersPanel.add(comSet_CheckLabel);
-			comParametersPanel.add(comSet_CheckComboBox);
-			comParametersPanel.add(comSet_DataBitLabel);
-			comParametersPanel.add(comSet_DataBitComboBox);
-			comParametersPanel.add(comSet_StopBitLabel);
-			comParametersPanel.add(comSet_StopBitComboBox);
 			
-			comSetPanel.add(comParametersPanel);
-			comSetPanel.add(comSet_OpenButton);
+			JPanel spacePanel = new JPanel();//空白列
+			GridBagConstraints comSet_ParametersConstraints = new GridBagConstraints();// 创建网格限制对象
+						
+			comSet_ParametersConstraints.gridx = 1;// 组件位于网格的横向索引为4
+			comSet_ParametersConstraints.gridy = 0;// 组件位于网格的纵向索引为0
+			comSet_ParametersConstraints.weightx = 0.1;
+			comSet_ParametersConstraints.weighty = 1;
+			comSet_ParametersConstraints.insets = new Insets(2,0,2,0);  //top and bottom padding
+			comSet_ParametersConstraints.fill = GridBagConstraints.HORIZONTAL;// 组件垂直扩大以占据空白区域
+			comSetPanel.add(comSet_NumLabel,comSet_ParametersConstraints);
+			
+			comSet_ParametersConstraints.gridy = 1;// 组件位于网格的纵向索引为0
+			comSetPanel.add(comSet_BaudLabel,comSet_ParametersConstraints);
+			
+			comSet_ParametersConstraints.gridy = 2;// 组件位于网格的纵向索引为0
+			comSetPanel.add(comSet_CheckLabel,comSet_ParametersConstraints);
+			
+			comSet_ParametersConstraints.gridy = 3;// 组件位于网格的纵向索引为0
+			comSetPanel.add(comSet_DataBitLabel,comSet_ParametersConstraints);
+			
+			comSet_ParametersConstraints.gridy = 4;// 组件位于网格的纵向索引为0
+			comSetPanel.add(comSet_StopBitLabel,comSet_ParametersConstraints);
+		
+			
+			comSet_ParametersConstraints.gridx = 2;// 组件位于网格的横向索引为4
+			comSet_ParametersConstraints.gridy = 0;// 组件位于网格的纵向索引为0
+			comSet_ParametersConstraints.weightx = 1.2;
+			comSetPanel.add(comSet_NumComboBox,comSet_ParametersConstraints);
+						
+			comSet_ParametersConstraints.gridy = 1;// 组件位于网格的纵向索引为0
+			comSetPanel.add(comSet_BaudComboBox,comSet_ParametersConstraints);
+						
+			comSet_ParametersConstraints.gridy = 2;// 组件位于网格的纵向索引为0
+			comSetPanel.add(comSet_CheckComboBox,comSet_ParametersConstraints);
+						
+			comSet_ParametersConstraints.gridy = 3;// 组件位于网格的纵向索引为0
+			comSetPanel.add(comSet_DataBitComboBox,comSet_ParametersConstraints);
+				
+			comSet_ParametersConstraints.gridy = 4;// 组件位于网格的纵向索引为0
+			comSetPanel.add(comSet_StopBitComboBox,comSet_ParametersConstraints);
+			
+			comSet_ParametersConstraints.gridx = 3;// 组件位于网格的横向索引为4
+			comSet_ParametersConstraints.gridy = 0;// 组件位于网格的纵向索引为0
+			comSet_ParametersConstraints.weightx = 0.1;
+			comSetPanel.add(spacePanel,comSet_ParametersConstraints);
+			
+			comSet_ParametersConstraints.gridx = 2;// 组件位于网格的横向索引为4
+			comSet_ParametersConstraints.gridy = 5;// 组件位于网格的纵向索引为0
+			comSet_ParametersConstraints.weightx = 1.2;
+			comSetPanel.add(comSet_OpenButton,comSet_ParametersConstraints);
 			
 			
 			saveFilePanel.add(receiveSet_SaveDateLabel);
@@ -174,14 +212,12 @@ public class ComFrame extends JFrame {
 			GridBagConstraints optionsGridBagConstraints = new GridBagConstraints();// 创建网格限制对象
 			optionsGridBagConstraints.gridx = 0;// 组件位于网格的横向索引为4
 			optionsGridBagConstraints.fill = GridBagConstraints.BOTH;// 组件垂直扩大以占据空白区域
-			optionsGridBagConstraints.weighty = 1.0;// 组件纵向扩大的权重是1.0
-			optionsGridBagConstraints.weightx = 1.0;
+			optionsGridBagConstraints.weightx = 0.1;
 			optionsGridBagConstraints.gridy = 0;// 组件位于网格的纵向索引为0
 			
 			GridBagConstraints receiveSendGridBagConstraints = new GridBagConstraints();// 创建网格限制对象
 			receiveSendGridBagConstraints.gridx = 1;// 组件位于网格的横向索引为0
 			receiveSendGridBagConstraints.fill = GridBagConstraints.BOTH;// 组件水平扩大以占据空白区域
-			optionsGridBagConstraints.weighty = 1.0;// 组件纵向扩大的权重是1.0
 			receiveSendGridBagConstraints.weightx = 10.0;// 组件横向扩大的权重是1.0
 			receiveSendGridBagConstraints.gridy = 0;// 组件位于网格的纵向索引为0
 			
@@ -190,7 +226,7 @@ public class ComFrame extends JFrame {
 			
 			
 			mainPanel.add(operatePanel);
-			mainPanel.add(statePanel,BorderLayout.SOUTH);
+//			mainPanel.add(statePanel,BorderLayout.SOUTH);
 		}
 		
 		return mainPanel;
